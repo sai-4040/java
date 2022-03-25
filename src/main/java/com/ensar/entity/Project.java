@@ -1,0 +1,24 @@
+package com.ensar.entity;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
+@Entity(name = "projects")
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class Project extends BaseEntity {
+
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
+   
+ 
+
+}
