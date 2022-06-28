@@ -1,0 +1,73 @@
+spring:
+  application:
+    name: demo-svc
+  datasource:
+    url: jdbc:mysql://${DB_SERVER}:${DB_PORT}/${DB_SCHEMA}?createDatabaseIfNotExist=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&useLegacyDatetimeCode=false&serverTimezone=UTC&verifyServerCertificate=false&useSSL=${DB_USE_SSL}&requireSSL=${DB_REQUIRE_SSL}&only_full_group_by=false&useUnicode=true&characterEncoding=utf8
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.jdbc.Driver
+    testPath-on-borrow: true
+    testPath-while-idle: true
+    validation-query: SELECT 1
+  flyway:
+    schemas: ${DB_SCHEMA}
+    placeholders:
+      schema: ${DB_SCHEMA}
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format-sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        enable_lazy_load_no_trans: true
+  
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 10000ms
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: -1ms
+        max-idle: 8
+        min-idle: 8
+  cache:
+    type: redis
+    redis:
+      time-to-live: 30
+      cache-null-values: false
+  jackson:
+     serialization:
+       write-dates-as-timestamps: false
+     time-zone: America/Chicago
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:29092
+      group-id: group_id
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      bootstrap-servers: localhost:29092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  rabbitmq:
+    host: localhost
+    password: guest
+    port: 15672
+    username: guest
+    exchange: user.exchange
+    queue: user.queue
+    routingkey: user.routingkey
+app:
+  jwt:
+    secret:
+      key: ${JWT_SECRET_KEY}
+    ttl:
+      minutes: ${JWT_TTL_MINS}
+  url:
+    prefix: ${SERVER_URL_PREFIX:http://localhost:3000}
+logging:
+    level:
+        ROOT: INFO
+        com.ensar: INFO
